@@ -16,7 +16,7 @@ LAPACK_LIB = -framework Accelerate
 # LUA_INC = -I./lua-5.2.4/install/include
 # LUA_LIB = -L./lua-5.2.4/install/lib -llua -ldl
 
-# Typically if installed (use Homebrew, brew install fifth),
+# Typically if installed (use Homebrew, brew install fftw),
 #  FFTW3_INC can be left empty
 #  FFTW3_LIB = -lfftw3
 FFTW3_INC = -I/usr/local/include
