@@ -1,4 +1,4 @@
-# Detailed installation instructions (64-bit Ubuntu 16 or 18):
+# Installation instructions (64-bit Ubuntu 16/18/20 or MacOS):
 
 ## Key steps:
 
@@ -8,6 +8,9 @@ cd S4
 make boost
 make S4_pyext
 ```
+
+Make boost automatically downloads and compiles the relevant Boost libraries in the local S4 directory. This version of boost will be automatically linked when
+compiling during `make S4_pyext`. If you want to use Boost libraries in a different location you will have to edit the Makefile.
 
 ## Installing relevant libraries etc.:
 
