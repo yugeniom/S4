@@ -11,20 +11,25 @@ make S4_pyext
 
 ## Installing relevant libraries etc.:
 
-```sudo apt-get update
-sudo apt install make
-sudo apt install git
-sudo apt install python3-pip
-sudo pip3 install numpy matplotlib scipy
-sudo apt-get install python3-tk
-sudo apt-get install libopenblas-dev
-sudo apt-get install libfftw3-dev
-sudo apt-get install libsuitesparse-dev
+**On Ubuntu (with a working version of Python3):**
+
+```
+sudo apt-get update
+sudo apt install make git gcc g++
+sudo apt-get install libopenblas-dev libfftw3-dev libsuitesparse-dev
 ```
 
 - libopenblas installs OpenBLAS, to satisfy the LAPACK and BLAS requirements
 - lib fftw3 install FFTW3, to satisfy the FFTW requirements
 - libsuitesparse install libraries to satisdy CHOLMOD & related requirements
+
+**On MacOS using Homebrew:**
+
+```
+brew install fftw suite-sparse openblas lapack
+```
+
+You can get the make and git commands from homebrew, or through Apple Developer Tools. If the packages are installed/symlinked by Homebrew to the default location (/usr/local/include) you should not have to modify the Makefile, and you should be able to use the same Makefile as Ubuntu/Linux (i.e. no need to use Makefile.osx).
 
 *If you have multiple Python versions, you make need to modify the S4_pyext part of the Makefile:*
 
@@ -36,6 +41,10 @@ to e.g.:
 ```
 [path of target python or virtual environment] setup.py install
 ```
+
+You can install S4 into a vitual environment automatically by just activating that environment in your terminal before running `make S4_pyext`.
+
+See [here](https://rayflare.readthedocs.io/en/latest/Installation/installation.html) for more extensive instructions.
 
 -------------------------------------
 
