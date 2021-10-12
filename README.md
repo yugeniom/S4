@@ -1,3 +1,5 @@
+If you are looking for a more user-friendly interface to S4 (wavelength-dependent calculations, material management etc.), check out my Python3 package [RayFlare](https://rayflare.readthedocs.io)
+
 # Installation instructions (64-bit Ubuntu 16/18/20 or MacOS):
 
 ## Key steps:
@@ -45,7 +47,7 @@ to e.g.:
 [path of target python or virtual environment] setup.py install
 ```
 
-You can install S4 into a vitual environment automatically by just activating that environment in your terminal before running `make S4_pyext`.
+You can install S4 into a virtual environment automatically by just activating that environment in your terminal before running `make S4_pyext`.
 
 See [here](https://rayflare.readthedocs.io/en/latest/Installation/installation.html) for more extensive instructions.
 
