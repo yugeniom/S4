@@ -664,14 +664,16 @@ static PyObject *S4Sim_Clone(S4Sim *self, PyObject *args){
 	}
 	return (PyObject*)cpy;
 }
+
 static PyObject *S4Sim_LoadSolution(S4Sim *self, PyObject *args, PyObject *kwds){
     //printf"Inside S4Sim_LoadSolution\n");
 	static char *kwlist[] = { "Filename", NULL };
 	const char *fname;
-	if(!PyArg_ParseTupleAndKeywords(args, kwds, "s:LoadSolution", kwlist, &fname)){ return NULL; }
+    // int err;
+
+    if(!PyArg_ParseTupleAndKeywords(args, kwds, "s:LoadSolution", kwlist, &fname)){ return NULL; }
     //printf"Parsed args!\n");
-    int err;
-    err = Simulation_LoadSolution(&(self->S), fname);
+    // err = Simulation_LoadSolution(&(self->S), fname);
     // if (err != 0){
     //     HandleSolutionErrorCode("Simulation_LoadSolution", err);
     // }
@@ -682,11 +684,11 @@ static PyObject *S4Sim_SaveSolution(S4Sim *self, PyObject *args, PyObject *kwds)
 	static char *kwlist[] = { "Filename", NULL };
 	const char *fname;
 	if(!PyArg_ParseTupleAndKeywords(args, kwds, "s:SaveSolution", kwlist, &fname)){ return NULL; }
-    int err;
-    err = Simulation_SaveSolution(&(self->S), fname);
-    if (err != 0){
-        HandleSolutionErrorCode("Simulation_SaveSolution", err);
-    }
+    // int err;
+    // err = Simulation_SaveSolution(&(self->S), fname);
+    // if (err != 0){
+    //    HandleSolutionErrorCode("Simulation_SaveSolution", err);
+    // }
 	Py_RETURN_NONE;
 }
 
