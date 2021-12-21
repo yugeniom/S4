@@ -7,12 +7,10 @@ If you are looking for a more user-friendly interface to S4 (wavelength-dependen
 ```
 git clone https://github.com/phoebe-p/S4
 cd S4
-make boost
 make S4_pyext
 ```
 
-`make boost` automatically downloads and compiles the relevant Boost libraries in the local S4 directory. This version of boost will be automatically linked when
-compiling during `make S4_pyext`. If you want to use Boost libraries in a different location you will have to edit the Makefile.
+Running the `make boost` command before `make S4_pyext` should automatically download and compile the relevant Boost libraries in the local S4 directory. HOWEVER, this appears to cause problems on macOS, so if you are installing on macOS you should install the boost libraries using Homebrew (see below). If you want to use Boost libraries in a different location you will have to edit the Makefile.
 
 ## Installing relevant libraries etc.:
 
@@ -21,22 +19,24 @@ compiling during `make S4_pyext`. If you want to use Boost libraries in a differ
 ```
 sudo apt-get update
 sudo apt install make git gcc g++
-sudo apt-get install libopenblas-dev libfftw3-dev libsuitesparse-dev
+sudo apt install libopenblas-dev libfftw3-dev libsuitesparse-dev
 ```
 
 - libopenblas installs OpenBLAS, to satisfy the LAPACK and BLAS requirements
 - lib fftw3 install FFTW3, to satisfy the FFTW requirements
 - libsuitesparse install libraries to satisdy CHOLMOD & related requirements
 
+If you want, you can also install the boost libraries using `sudo apt install libboost-all-dev` instead of running `make boost`.
+
 **On MacOS using Homebrew:**
 
 ```
-brew install fftw suite-sparse openblas lapack
+brew install fftw suite-sparse openblas lapack boost
 ```
 
 You can get the make and git commands from homebrew, or through Apple Developer Tools. If the packages are installed/symlinked by Homebrew to the default location (/usr/local/include) you should not have to modify the Makefile, and you should be able to use the same Makefile as Ubuntu/Linux (i.e. no need to use Makefile.osx).
 
-*If you have multiple Python versions, you make need to modify the S4_pyext part of the Makefile:*
+*If you have multiple Python versions, you may need to modify the S4_pyext part of the Makefile:*
 
 ````
 pip3 install --upgrade ./
