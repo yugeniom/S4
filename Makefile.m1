@@ -1,53 +1,87 @@
 # To build:
 #   make <target>
-# Use either 'S4lua' for Lua, or 'python_ext' for Python.
-# S4lua also builds FunctionSampler1D and FunctionSampler2D, in modules.
-# You can build the sampler seperately with 'make sampler'
+# Use the 'lib' target first to build the library, then either the Lua
+# or Python targets are 'S4lua' and 'python_ext', respectively.
 
 # Set these to the flags needed to link against BLAS and Lapack.
 #  If left blank, then performance may be very poor.
-BLAS_LIB = -framework Accelerate
-LAPACK_LIB = -framework Accelerate
+#  On Mac OS,
+#   BLAS_LIB = -framework vecLib
+#   LAPACK_LIB = -framework vecLib
+#  On Fedora: dnf install openblas-devel
+#  On Debian and Fedora, with reference BLAS and Lapack (slow)
+#   BLAS_LIB = -lblas
+#   LAPACK_LIB = -llapack
+#  NOTE: on Fedora, need to link blas and lapack properly, where X.X.X is some version numbers
+#  Linking Command Example: sudo ln -s /usr/lib64/liblapack.so.X.X.X /usr/lib64/liblapack.so
+#  blas Example: sudo ln -s /usr/lib64/libopeblas64.so.X.X.X /usr/lib64/libblas.so
+#  Can also use -L to link to the explicit libary path
+#  For example to use blas/lapack or even mkl installed in a anaconda conda environment:
+# BLAS_LIB = -L$(CONDA_PREFIX)/lib/ -lmkl_core -lmkl_rt -lstdc++ -lpthread -lm -ldl
+# LAPACK_LIB = -L$(CONDA_PREFIX)/lib/ -lmkl_core -lmkl_rt -lstdc++ -lpthread -lm -ldl
+BLAS_LIB = -lblas
+LAPACK_LIB = -llapack
 
 # Specify the flags for Lua headers and libraries (only needed for Lua frontend)
 # Recommended: build lua in the current directory, and link against this local version
 # LUA_INC = -I./lua-5.2.4/install/include
-# LUA_LIB = -L./lua-5.2.4/install/lib -llua -ldl
-# LUA_INC = -I./lua-5.2.4/install/include
-# LUA_LIB = -L./lua-5.2.4/install/lib -llua -ldl
+# LUA_LIB = -L./lua-5.2.4/install/lib -llua -ldl -lm
+LUA_INC = -I./lua-5.2.4/install/include
+LUA_LIB = -L./lua-5.2.4/install/lib -llua -ldl -lm
 
-# Typically if installed (use Homebrew, brew install fftw),
+# OPTIONAL
+# Typically if installed,
 #  FFTW3_INC can be left empty
-#  FFTW3_LIB = -lfftw3
-FFTW3_INC = -I/usr/local/include
+#  FFTW3_LIB = -lfftw3 
+#  or, if Fedora and/or fftw is version 3 but named fftw rather than fftw3
+#  FTW3_LIB = -lfftw 
+#  May need to link libraries properly as with blas and lapack above
+# FFTW3_INC = -I$(CONDA_PREFIX)/include/
+# FFTW3_LIB = -L$(CONDA_PREFIX)/lib/ -lfftw3
+FFTW3_INC =
 FFTW3_LIB = -lfftw3
 
 # Typically,
-#  PTHREAD_INC = -DHAVE_UNISTD_H -lpthread
+#  PTHREAD_INC = -DHAVE_UNISTD_H
 #  PTHREAD_LIB = -lpthread
-PTHREAD_INC =  -DHAVE_UNISTD_H
-PTHREAD_LIB = -lpthread
+# If conda env
+# PTHREAD_LIB = -L$(CONDA_PREFIX)/lib/ -lpthread
+PTHREAD_INC = -DHAVE_UNISTD_H
+#PTHREAD_LIB = -lpthread
 
-# Typically if installed (use Home-brew, brew install suite-sparse),
-CHOLMOD_INC = -I/usr/local/include
+# OPTIONAL
+# If not installed:
+# Fedora: dnf install libsuitsparse-devel
+# Typically, if installed:
+#CHOLMOD_INC = -I/usr/include/suitesparse
+#CHOLMOD_LIB = -lcholmod -lamd -lcolamd -lcamd -lccolamd
+# Alternate Example: I compiled and istalled SuiteSpares in the directory above this S4 directory
+# CHOLMOD_INC = -I../SuiteSparse/include/
+# CHOLMOD_LIB = -L../SuiteSparse/lib/ -lcholmod -lamd -lcolamd -lcamd -lccolamd
+CHOLMOD_INC = -I/usr/include/suitesparse
 CHOLMOD_LIB = -lcholmod -lamd -lcolamd -lcamd -lccolamd
 
-
-BOOST_PREFIX=-I/usr/local
-BOOST_INC = -I$(BOOST_PREFIX)/include
-BOOST_LIBS = -L$(BOOST_PREFIX)/lib/ -lboost_serialization
-boost: $(BOOST_PREFIX)/lib
-
-
 # Specify the MPI library
-MPI_INC =
-MPI_LIB =
+# For example, on Fedora: dnf  install openmpi-devel
+#MPI_INC = -I/usr/include/openmpi-x86_64/openmpi/ompi
+#MPI_LIB = -lmpi
+# or, explicitly link to the library with -L, example below
+#MPI_LIB = -L/usr/lib64/openmpi/lib/libmpi.so
+#MPI_INC = -I/usr/include/openmpi-x86_64/openmpi
+#MPI_LIB = -L/usr/lib64/openmpi/lib/libmpi.so
+
+# Enable S4_TRACE debugging
+# values of 1, 2, 3 enable debugging, with verbosity increasing as 
+# value increases. 0 to disable
+S4_DEBUG = 0
+S4_PROF = 0
 
 # Specify custom compilers if needed
-CXX = c++
-CC  = cc
+CXX = g++
+CC  = gcc
 
-CFLAGS = -O3 -fPIC
+#CFLAGS += -O3 -fPIC
+CFLAGS = -Wall -O3 -m64 -mcpu=apple-m1 -mtune=native -fPIC
 
 # options for Sampler module
 OPTFLAGS = -O3
@@ -57,29 +91,9 @@ S4_BINNAME = $(OBJDIR)/S4
 S4_LIBNAME = $(OBJDIR)/libS4.a
 S4r_LIBNAME = $(OBJDIR)/libS4r.a
 
-#### Download, compile, and install boost serialization lib. 
-#### This should all work fine, you must modify BOOST_INC, BOOST_LIBS,
-#### and PREFIX if you want to install boost to a different location 
+BOOST_INC =
+BOOST_LIBS = -lboost_serialization
 
-# Specify the paths to the boost include and lib directories
-BOOST_PREFIX=${CURDIR}/S4
-BOOST_INC = -I$(BOOST_PREFIX)/include
-BOOST_LIBS = -L$(BOOST_PREFIX)/lib/ -lboost_serialization
-BOOST_URL=https://sourceforge.net/projects/boost/files/boost/1.61.0/boost_1_61_0.tar.gz
-BOOST_FILE=boost.tar.gz
-# Target for downloading boost from above URL
-$(BOOST_FILE):
-	wget $(BOOST_URL) -O $(BOOST_FILE)
-
-# Target for extracting boost from archive and compiling. Depends on download target above
-${CURDIR}/S4/lib: $(BOOST_FILE)  
-	$(eval BOOST_DIR := $(shell tar tzf $(BOOST_FILE) | sed -e 's@/.*@@' | uniq))
-	@echo Boost dir is $(BOOST_DIR)
-	tar -xzvf $(BOOST_FILE)
-	mv $(BOOST_DIR) boost_src
-	cd boost_src && ./bootstrap.sh --with-libraries=serialization --prefix=$(BOOST_PREFIX) && ./b2 install
-# Final target which pulls everything together
-boost: $(BOOST_PREFIX)/lib
 
 ##################### DO NOT EDIT BELOW THIS LINE #####################
 
