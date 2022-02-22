@@ -10,7 +10,12 @@ cd S4
 make S4_pyext
 ```
 
-Running the `make boost` command before `make S4_pyext` should automatically download and compile the relevant Boost libraries in the local S4 directory. HOWEVER, this appears to cause problems on macOS, so if you are installing on macOS you should install the boost libraries using Homebrew (see below). If you want to use Boost libraries in a different location you will have to edit the Makefile.
+Running the `make boost` command before `make S4_pyext` should automatically download and compile the relevant Boost libraries in the local S4 directory. 
+HOWEVER, this appears to cause problems on macOS, so if you are installing on macOS you should install the boost libraries 
+using Homebrew (see below). If you want to use Boost libraries in a different location you will have to edit the Makefile.
+
+**Note for users of new (late 2020 onwards) Apple machines with M1/Apple silicon/ARM chips: you will need to use Makefile.m1
+to compile successfully, see notes below on how to do this.**
 
 ## Installing relevant libraries etc.:
 
@@ -50,6 +55,19 @@ to e.g.:
 You can install S4 into a virtual environment automatically by just activating that environment in your terminal before running `make S4_pyext`.
 
 See [here](https://rayflare.readthedocs.io/en/latest/Installation/installation.html) for more extensive instructions.
+
+
+**On MacOS with M1/ARM chips:**
+
+Some of the flags used in the default Makefile cause issues with the new chip architecture. Run the following instead:
+
+```
+git clone https://github.com/phoebe-p/S4
+cd S4
+make S4_pyext --file="Makefile.m1"
+```
+
+Installing the libraries with Homebrew should work as expected.
 
 -------------------------------------
 
