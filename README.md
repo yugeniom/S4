@@ -33,13 +33,9 @@ from google.colab import drive
 import os, sys
 drive.mount('/content/gdrive')
 %cd /content/gdrive/MyDrive/S4all
-
-import os, sys
 lib_path = '/content/gdrive/MyDrive/S4all/libraries'
-#os.symlink('/content/gdrive/MyDrive/S4all/libraries', lib_path)
 sys.path.insert(0,lib_path)
 
-!apt install make git gcc g++ gfortran
 !apt-get install libopenblas-dev libfftw3-dev libsuitesparse-dev
 
 import S4
