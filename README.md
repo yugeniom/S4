@@ -40,7 +40,7 @@ sys.path.insert(0,lib_path)
 
 import S4
 ```
-4bis) Mind that your will be asked to grant access to drive and to reinstall blas and fftw libraries every time you disconnect your Colab Notebook; this normally happens automatically after some minutes of inactivity, so you'd better trick Google into thinking that you are always active while the Notebook is open; you can do that adding this line in a cell following your whole code:
+4bis) Mind that your will be asked to grant access to GDrive and to reinstall blas and fftw libraries every time you disconnect your Colab Notebook; this normally happens automatically after a few minutes of inactivity, so you'd better trick Google into thinking that you are always active while the Notebook is open; you can do that adding this line in a cell following your whole code:
 ```
 while True:pass
 ```
