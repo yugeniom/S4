@@ -91,27 +91,27 @@ S4_BINNAME = $(OBJDIR)/S4
 S4_LIBNAME = $(OBJDIR)/libS4.a
 S4r_LIBNAME = $(OBJDIR)/libS4r.a
 
-#### Download, compile, and install boost serialization lib.
+#### Download, compile, and install boost serialization lib. 
 #### This should all work fine, you must modify BOOST_INC, BOOST_LIBS,
-#### and PREFIX if you want to install boost to a different location
+#### and PREFIX if you want to install boost to a different location 
 
 # Specify the paths to the boost include and lib directories
-BOOST_PREFIX=${CURDIR}/S4
+BOOST_PREFIX=/content/gdrive/MyDrive/S4all/S4/S4
 BOOST_INC = -I$(BOOST_PREFIX)/include
 BOOST_LIBS = -L$(BOOST_PREFIX)/lib/ -lboost_serialization
-BOOST_URL=https://sourceforge.net/projects/boost/files/boost/1.74.0/boost_1_74_0.tar.gz
+BOOST_URL=https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz
 BOOST_FILE=boost.tar.gz
 # Target for downloading boost from above URL
 $(BOOST_FILE):
 	wget $(BOOST_URL) -O $(BOOST_FILE)
 
 # Target for extracting boost from archive and compiling. Depends on download target above
-${CURDIR}/S4/lib: $(BOOST_FILE)
+/content/gdrive/MyDrive/S4all/S4/S4/lib: $(BOOST_FILE)  
 	$(eval BOOST_DIR := $(shell tar tzf $(BOOST_FILE) | sed -e 's@/.*@@' | uniq))
 	@echo Boost dir is $(BOOST_DIR)
 	tar -xzvf $(BOOST_FILE)
 	mv $(BOOST_DIR) boost_src
-	cd boost_src && ./bootstrap.sh --with-libraries=serialization --prefix=$(BOOST_PREFIX) && ./b2 install
+	cd boost_src && ./bootstrap.sh --with-libraries=serialization --prefix=$(BOOST_PREFIX) && chmod 755 /content/gdrive/MyDrive/S4all/S4/boost_src/b2 && ./b2 install
 # Final target which pulls everything together
 boost: $(BOOST_PREFIX)/lib
 
@@ -120,32 +120,32 @@ boost: $(BOOST_PREFIX)/lib
 
 #### Set the compilation flags
 
-CPPFLAGS = -Wall -I. -IS4 -IS4/RNP -IS4/kiss_fft
-
+CPPFLAGS = -Wall -I. -IS4 -IS4/RNP -IS4/kiss_fft 
+ 
 ifeq ($(S4_PROF), 1)
 CPPFLAGS += -g -pg
 endif
 
 ifeq ($(S4_DEBUG), 1)
-CPPFLAGS += -ggdb
+CPPFLAGS += -ggdb 
 endif
 
 ifeq ($(S4_DEBUG), 2)
 CPPFLAGS += -DENABLE_S4_TRACE
-CPPFLAGS += -ggdb
+CPPFLAGS += -ggdb 
 endif
 
 ifeq ($(S4_DEBUG), 3)
 CPPFLAGS += -DENABLE_S4_TRACE
 CPPFLAGS += -DDUMP_MATRICES
-CPPFLAGS += -ggdb
+CPPFLAGS += -ggdb 
 endif
 
 ifeq ($(S4_DEBUG), 4)
 CPPFLAGS += -DENABLE_S4_TRACE
 CPPFLAGS += -DDUMP_MATRICES
 CPPFLAGS += -DDUMP_MATRICES_LARGE
-CPPFLAGS += -ggdb
+CPPFLAGS += -ggdb 
 endif
 
 ifdef BOOST_INC
@@ -188,7 +188,7 @@ objdir:
 	mkdir -p $(OBJDIR)/S4k
 	mkdir -p $(OBJDIR)/S4r
 	mkdir -p $(OBJDIR)/modules
-
+	
 S4_LIBOBJS = \
 	$(OBJDIR)/S4k/S4.o \
 	$(OBJDIR)/S4k/rcwa.o \
@@ -288,7 +288,7 @@ $(OBJDIR)/S4k/convert.o: S4/convert.c
 $(OBJDIR)/S4k/Eigensystems.o: S4/RNP/Eigensystems.cpp
 	$(CXX) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 
-
+	
 
 
 $(OBJDIR)/S4r/Material.o: S4r/Material.cpp S4r/Material.hpp S4r/Types.hpp
@@ -315,11 +315,11 @@ $(OBJDIR)/S4r/IRA.o: S4r/IRA.cpp S4r/IRA.hpp S4r/Types.hpp
 	$(CXX) -c $(CFLAGS) $(CPPFLAGS) -I. $< -o $@
 $(OBJDIR)/S4r/intersection.o: S4r/intersection.c S4r/intersection.h
 	$(CC) -c -O3 $< -o $@
-$(OBJDIR)/S4r/periodic_off2.o: S4r/periodic_off2.c S4r/periodic_off2.h
+$(OBJDIR)/S4r/periodic_off2.o: S4r/periodic_off2.c S4r/periodic_off2.h 
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $< -o $@
 $(OBJDIR)/S4r/predicates.o: S4r/predicates.c
 	$(CC) -c -O3 $< -o $@
-
+	
 #### Lua Frontend
 
 $(OBJDIR)/S4k/main_lua.o: S4/main_lua.c objdir
@@ -349,7 +349,7 @@ FunctionSampler2D.so: modules/function_sampler_2d.c modules/function_sampler_2d.
 
 S4_pyext: objdir $(S4_LIBNAME)
 	sh gensetup.py.sh $(OBJDIR) $(S4_LIBNAME) "$(LIBS)" $(BOOST_PREFIX)
-	pip3 install --upgrade ./
+	pip3 install --upgrade --target='/content/gdrive/MyDrive/S4all/libraries' ./
 
 clean:
 	rm -rf $(OBJDIR)
