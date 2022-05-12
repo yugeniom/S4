@@ -27,7 +27,7 @@ git clone https://github.com/yugeniom/S4_xColab.git
 !make boost
 !make S4_pyext
 ```
-4) S4_xColab is now permanently installed on your Google Drive. To create a simulation, create a new Colab Notebook with the following heading cell, followed by :
+4) S4_xColab is now permanently installed on your Google Drive. To create a simulation, create a new Colab Notebook with the following heading cell, followed by your own simulation code:
 ```
 from google.colab import drive
 import os, sys
