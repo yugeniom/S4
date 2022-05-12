@@ -96,7 +96,7 @@ S4r_LIBNAME = $(OBJDIR)/libS4r.a
 #### and PREFIX if you want to install boost to a different location 
 
 # Specify the paths to the boost include and lib directories
-BOOST_PREFIX=/content/gdrive/MyDrive/S4all/S4/S4
+BOOST_PREFIX=/content/gdrive/MyDrive/S4all/S4_xColab/S4
 BOOST_INC = -I$(BOOST_PREFIX)/include
 BOOST_LIBS = -L$(BOOST_PREFIX)/lib/ -lboost_serialization
 BOOST_URL=https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/boost_1_77_0.tar.gz
@@ -106,12 +106,12 @@ $(BOOST_FILE):
 	wget $(BOOST_URL) -O $(BOOST_FILE)
 
 # Target for extracting boost from archive and compiling. Depends on download target above
-/content/gdrive/MyDrive/S4all/S4/S4/lib: $(BOOST_FILE)  
+/content/gdrive/MyDrive/S4all/S4_xColab/S4/lib: $(BOOST_FILE)  
 	$(eval BOOST_DIR := $(shell tar tzf $(BOOST_FILE) | sed -e 's@/.*@@' | uniq))
 	@echo Boost dir is $(BOOST_DIR)
 	tar -xzvf $(BOOST_FILE)
 	mv $(BOOST_DIR) boost_src
-	cd boost_src && ./bootstrap.sh --with-libraries=serialization --prefix=$(BOOST_PREFIX) && chmod 755 /content/gdrive/MyDrive/S4all/S4/boost_src/b2 && ./b2 install
+	cd boost_src && ./bootstrap.sh --with-libraries=serialization --prefix=$(BOOST_PREFIX) && chmod 755 /content/gdrive/MyDrive/S4all/S4_xColab/boost_src/b2 && ./b2 install
 # Final target which pulls everything together
 boost: $(BOOST_PREFIX)/lib
 
