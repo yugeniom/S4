@@ -1,7 +1,7 @@
 -------------------
 HOWTO install S4 permanently on Google Drive and run it with Colab Notebook on free Google VMs (~Jupyter notebooks)
 
-1) Create the "S4all" program folder on your Gdrive and a "libraries" subfolder (if you want to change the folder name, you will have to edit the Makefile)
+1) Create the "S4all" program folder on your Gdrive and a "libraries" subfolder. Please use these exact names; if you want to change the folder names, you will have to edit the Makefile)
 
 2) Open an empty Colab notebook, type this and run (Google will ask your permission to access your Drive, grant it):
 ```
