@@ -42,12 +42,10 @@ __bootstrap__()
 5) S4_xColab is now permanently installed on your Google Drive. To create a simulation, create a new Colab Notebook with the following heading cell, followed by your own simulation code:
 ```
 from google.colab import drive
-import os, sys
+import sys
 drive.mount('/content/gdrive')
 %cd /content/gdrive/MyDrive/S4all
-lib_path = '/content/gdrive/MyDrive/S4all/libraries'
-sys.path.insert(0,lib_path)
-
+sys.path.append('/content/gdrive/MyDrive/S4all/libraries/')
 !apt-get install libopenblas-dev libfftw3-dev libsuitesparse-dev
 
 import S4
