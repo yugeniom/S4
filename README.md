@@ -27,7 +27,19 @@ git clone https://github.com/yugeniom/S4_xColab.git
 !make boost
 !make S4_pyext
 ```
-4) S4_xColab is now permanently installed on your Google Drive. To create a simulation, create a new Colab Notebook with the following heading cell, followed by your own simulation code:
+4) Create a new file named "S4.py" with the following content, then upload it into the folder "libraries":
+
+```
+def __bootstrap__():
+   global __bootstrap__, __loader__, __file__
+   import sys, pkg_resources, imp
+   __file__ = pkg_resources.resource_filename(__name__,'S4.cpython-38-x86_64-linux-gnu.so')
+   __loader__ = None; del __bootstrap__, __loader__
+   imp.load_dynamic(__name__,__file__)
+__bootstrap__()
+```
+
+5) S4_xColab is now permanently installed on your Google Drive. To create a simulation, create a new Colab Notebook with the following heading cell, followed by your own simulation code:
 ```
 from google.colab import drive
 import os, sys
@@ -40,7 +52,7 @@ sys.path.insert(0,lib_path)
 
 import S4
 ```
-4bis) Mind that your will be asked to grant access to GDrive and to reinstall blas and fftw libraries every time you disconnect your Colab Notebook; this normally happens automatically after a few minutes of inactivity, so you'd better trick Google into thinking that you are always active while the Notebook is open; you can do that adding this line in a cell following your whole code:
+5bis) Mind that your will be asked to grant access to GDrive and to reinstall blas and fftw libraries every time you disconnect your Colab Notebook; this normally happens automatically after a few minutes of inactivity, so you'd better trick Google into thinking that you are always active while the Notebook is open; you can do that adding this line in a cell following your whole code:
 ```
 while True:pass
 ```
